@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Title</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <h1>Welcome!</h1>
+  <p>Username: <span th:text="${username}"></span></p>
+  <p>Roles:</p>
+  <ul>
+    <li th:each="role : ${roles}" th:text="${role.authority}"></li>
+  </ul>
+</div>
+</body>
+</html>
