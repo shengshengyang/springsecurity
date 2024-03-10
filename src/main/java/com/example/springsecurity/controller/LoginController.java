@@ -1,4 +1,4 @@
-package com.example.springsecurity.Controller;
+package com.example.springsecurity.controller;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -19,4 +19,5 @@ public class LoginController {
         model.addAttribute("roles", authentication.getAuthorities());
         return "index";
     }
+
 }
