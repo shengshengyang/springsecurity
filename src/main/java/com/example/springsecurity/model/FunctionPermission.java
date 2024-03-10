@@ -3,6 +3,7 @@ package com.example.springsecurity.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "function_permission")
 public class FunctionPermission {
 
     @Id

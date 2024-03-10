@@ -3,7 +3,7 @@ package com.example.springsecurity.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "`Function`") // Use backticks for reserved keywords
+@Table(name = "s_function") // Use backticks for reserved keywords
 public class Function {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

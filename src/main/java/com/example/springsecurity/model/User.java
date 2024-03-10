@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "s_user") // 注意使用反引号
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

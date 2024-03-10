@@ -3,7 +3,6 @@ package com.example.springsecurity.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,15 +17,6 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 @EnableMethodSecurity
 @EnableWebSecurity
 public class SecurityConfig{
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
-
-
-    @Autowired //修改此處
-    public SecurityConfig(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,7 +29,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests((authorize) -> authorize
                         // spring security 6 之後 antMatchers(), mvcMathcers(), regexMatchers() 皆 removed
                         // 因此改用 requestMatchers
-                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/login", "/forgot-password").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
@@ -87,10 +77,6 @@ public class SecurityConfig{
 //    }
     // 使用自定义的 UserDetailsService 和 PasswordEncoder 配置 AuthenticationManagerBuilder
 
-    @Override //新增此處
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
