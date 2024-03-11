@@ -1,12 +1,11 @@
 package com.example.springsecurity.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -60,6 +59,15 @@ public class SecurityConfig{
 //                                        response.sendRedirect(targetUrl);
 //                                    }
 //                                })
+//                                客制化login fail
+                                .failureHandler((request, response, exception) -> {
+                                    String errorMessage = exception.getMessage();
+                                    request.getSession().setAttribute("error", errorMessage);
+                                    response.sendRedirect("/login-error");
+                                })
+
+                ).logout(
+                        logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login")
                 );
         // @formatter:on
         return http.build();

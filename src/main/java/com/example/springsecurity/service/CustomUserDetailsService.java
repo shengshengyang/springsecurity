@@ -31,6 +31,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("DEBUG: Attempting to load user - " + username);
         User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
         // 獲取用戶直接對應到的function
         Set<FunctionPermission> userFunctionPermissions = functionPermissionRepository.findByUser(user);
         Set<Function> userFunctions = new HashSet<>();

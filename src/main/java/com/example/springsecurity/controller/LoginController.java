@@ -1,6 +1,7 @@
 package com.example.springsecurity.controller;
 
 import com.example.springsecurity.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LoginController {
@@ -18,11 +20,19 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/login")
-    public String getLoginPage(){
+    @RequestMapping("/login")
+    public String login(HttpServletRequest request, Model model) {
+        request.getSession().removeAttribute("error");
         return "login";
     }
 
+    @GetMapping("/login-error")
+    public String loginError(HttpServletRequest request, Model model) {
+        String errorMessage = (String) request.getSession().getAttribute("error");
+        request.getSession().removeAttribute("error");
+        model.addAttribute("error", errorMessage);
+        return "login";
+    }
     @GetMapping("/index")
     public String home(Model model, Authentication authentication) {
         model.addAttribute("username", authentication.getName());
