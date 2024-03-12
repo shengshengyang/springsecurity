@@ -65,10 +65,17 @@ public class SecurityConfig{
                                     request.getSession().setAttribute("error", errorMessage);
                                     response.sendRedirect("/login-error");
                                 })
-
-                ).logout(
+                )
+                .logout(
                         logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/login")
-                );
+                )
+//                管理一次最多5 人登入
+                .sessionManagement(
+                        httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
+                                .maximumSessions(5)
+                                .expiredUrl("/login-error")
+                )
+        ;
         // @formatter:on
         return http.build();
     }
